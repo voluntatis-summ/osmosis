@@ -41,3 +41,17 @@ type BankKeeper interface {
 
 	SetDenomMetaData(ctx sdk.Context, denomMetaData banktypes.Metadata)
 }
+
+// Event Hooks
+// These can be utilized to communicate between a gamm keeper and another
+// keeper which must take particular actions when certain gamm actions happen.
+// The second keeper must implement this interface, which then the
+// gamm keeper can call.
+
+// GammHooks event hooks for staking validator object (noalias)
+type GammHooks interface {
+	AfterTokenSwapped(ctx sdk.Context)
+	AfterPoolCreated(ctx sdk.Context, poolId uint64)
+	AfterPoolJoined(ctx sdk.Context)
+	AfterPoolExited(ctx sdk.Context)
+}

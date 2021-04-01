@@ -1,4 +1,4 @@
-package lockup
+package claims
 
 import (
 	"encoding/json"
@@ -11,20 +11,22 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/c-osmosis/osmosis/x/lockup/client/cli"
-	"github.com/c-osmosis/osmosis/x/lockup/client/rest"
-	"github.com/c-osmosis/osmosis/x/lockup/keeper"
-	"github.com/c-osmosis/osmosis/x/lockup/types"
+	"github.com/c-osmosis/osmosis/x/claims/client/cli"
+	"github.com/c-osmosis/osmosis/x/claims/client/rest"
+	"github.com/c-osmosis/osmosis/x/claims/keeper"
+	"github.com/c-osmosis/osmosis/x/claims/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	// this line is used by starport scaffolding # ibc/module/import
 )
 
 var (
 	_ module.AppModule      = AppModule{}
 	_ module.AppModuleBasic = AppModuleBasic{}
+	// this line is used by starport scaffolding # ibc/module/interface
 )
 
 // ----------------------------------------------------------------------------

@@ -64,6 +64,10 @@ func (server msgServer) JoinPool(goCtx context.Context, msg *types.MsgJoinPool) 
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(
+			types.TypeEvtPoolJoined,
+			sdk.NewAttribute(types.AttributeKeyPoolId, fmt.Sprintf("%d", msg.PoolId)),
+		),
+		sdk.NewEvent(
 			sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 			sdk.NewAttribute(sdk.AttributeKeySender, msg.Sender),

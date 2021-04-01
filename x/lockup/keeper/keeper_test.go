@@ -1,12 +1,12 @@
 package keeper_test
 
 import (
-	"testing"
-	"time"
 	"github.com/c-osmosis/osmosis/app"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+	"testing"
+	"time"
 )
 
 type KeeperTestSuite struct {

@@ -5,16 +5,15 @@ package types
 
 import (
 	fmt "fmt"
-	io "io"
-	math "math"
-	math_bits "math/bits"
-
 	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/cosmos/cosmos-sdk/types"
 	types1 "github.com/cosmos/cosmos-sdk/x/auth/types"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	_ "github.com/regen-network/cosmos-proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -29,8 +28,7 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Record struct {
-	// TODO: What does this mean?
-	// Denormalized weight.
+	// Denormarized weight.
 	Weight github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,1,opt,name=weight,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"weight" yaml:"denormalized_weight"`
 	Token  types.Coin                             `protobuf:"bytes,2,opt,name=token,proto3" json:"token" yaml:"token"`
 }
@@ -76,7 +74,7 @@ func (m *Record) GetToken() types.Coin {
 }
 
 // PoolParams defined the parameters that will be managed by the pool governance
-// in the future. These parameters are not managed by the chain governance.
+// in the future. This params are not managed by the chain governanace.
 type PoolParams struct {
 	// If the pool is locked, users can't join, exit or swap the pool.
 	Lock            bool                                   `protobuf:"varint,1,opt,name=lock,proto3" json:"lock,omitempty"`
