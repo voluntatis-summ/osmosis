@@ -1,0 +1,62 @@
+syntax = "proto3";
+package cosmosis.osmosis.issuance;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/c-osmosis/osmosis/x/issuance/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc Mint(MsgMint) returns (MsgMintResponse);
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+message MsgMint {
+  string minter = 1 [ (gogoproto.moretags) = "yaml:\"minter\"" ];
+  string to = 2 [ (gogoproto.moretags) = "yaml:\"to\"" ];
+  cosmos.base.v1beta1.Coin amount = 3 [
+    (gogoproto.moretags) = "yaml:\"amount\"",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message MsgMintResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+
+message MsgBurn {
+  string burner = 1 [ (gogoproto.moretags) = "yaml:\"burner\"" ];
+  cosmos.base.v1beta1.Coin amount = 2 [
+    (gogoproto.moretags) = "yaml:\"amount\"",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message MsgBurnResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+
+message MsgUpdateMinter {
+  string authority = 1 [ (gogoproto.moretags) = "yaml:\"authority\"" ];
+  string minter = 2 [ (gogoproto.moretags) = "yaml:\"minter\"" ];
+  cosmos.base.v1beta1.Coin allowance = 3 [
+    (gogoproto.moretags) = "yaml:\"allowance\"",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message MsgUpdateMinterResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+
+message MsgRemoveMinter {
+  string authority = 1 [ (gogoproto.moretags) = "yaml:\"authority\"" ];
+  string minter = 2 [ (gogoproto.moretags) = "yaml:\"minter\"" ];
+}
+
+message MsgRemoveMinterResponse {
+}

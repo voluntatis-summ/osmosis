@@ -32,23 +32,23 @@ type AppStateV036 struct {
 
 // SnapshotFields provide fields of snapshot per account
 type SnapshotFields struct {
-	AtomAddress           string  `json:"atom_address"`
-        // Atom Balance = AtomStakedBalance + AtomUnstakedBalance
-	AtomBalance           sdk.Int `json:"atom_balance"`
-	AtomStakedBalance     sdk.Int `json:"atom_staked_balance"`
-	AtomUnstakedBalance   sdk.Int `json:"atom_unstaked_balance"`
-        // AtomStakedPercent = AtomStakedBalance / AtomBalance
+	AtomAddress string `json:"atom_address"`
+	// Atom Balance = AtomStakedBalance + AtomUnstakedBalance
+	AtomBalance         sdk.Int `json:"atom_balance"`
+	AtomStakedBalance   sdk.Int `json:"atom_staked_balance"`
+	AtomUnstakedBalance sdk.Int `json:"atom_unstaked_balance"`
+	// AtomStakedPercent = AtomStakedBalance / AtomBalance
 	AtomStakedPercent     sdk.Dec `json:"atom_staked_percent"`
 	AtomOwnershipPercent  sdk.Dec `json:"atom_ownership_percent"`
 	OsmoNormalizedBalance sdk.Int `json:"osmo_balance_normalized"`
-        // OsmoBalance = sqrt( AtomBalance ) * (1 + 1.5 * atom staked percent)
-	OsmoBalance           sdk.Int `json:"osmo_balance"`
-        // OsmoBalanceBonus = OsmoBalanceBase * (1.5 * atom staked percent)
-	OsmoBalanceBonus      sdk.Int `json:"osmo_balance_bonus"`
+	// OsmoBalance = sqrt( AtomBalance ) * (1 + 1.5 * atom staked percent)
+	OsmoBalance sdk.Int `json:"osmo_balance"`
+	// OsmoBalanceBonus = OsmoBalanceBase * (1.5 * atom staked percent)
+	OsmoBalanceBonus sdk.Int `json:"osmo_balance_bonus"`
 	// OsmoBalanceBase = sqrt(atom balance)
-	OsmoBalanceBase       sdk.Int `json:"osmo_balance_base"`
+	OsmoBalanceBase sdk.Int `json:"osmo_balance_base"`
 	// OsmoPercent = OsmoNormalizedBalance / TotalOsmoSupply
-	OsmoPercent           sdk.Dec `json:"osmo_ownership_percent"`
+	OsmoPercent sdk.Dec `json:"osmo_ownership_percent"`
 }
 
 // setCosmosBech32Prefixes set config for cosmos address system
@@ -99,7 +99,7 @@ Example:
 				return fmt.Errorf("failed to parse osmo supply: %s", osmoSupplyStr)
 			}
 
-                      // Read genesis file
+			// Read genesis file
 			genesisJson, err := os.Open(genesisFile)
 			if err != nil {
 				return err
@@ -210,7 +210,7 @@ Example:
 				acc.OsmoBalanceBonus = bonusOsmo.RoundInt()
 
 				allOsmo := baseOsmo.Add(bonusOsmo)
-                                // OsmoBalance = sqrt( all atoms) * (1 + 1.5) * (staked atom percent) = 
+				// OsmoBalance = sqrt( all atoms) * (1 + 1.5) * (staked atom percent) =
 				acc.OsmoBalance = allOsmo.RoundInt()
 
 				totalOsmoBalance = totalOsmoBalance.Add(allOsmo.RoundInt())
