@@ -20,6 +20,16 @@ for dir in $proto_dirs; do
 Mgoogle/protobuf/any.proto=github.com/cosmos/cosmos-sdk/codec/types:. \
   $(find "${dir}" -name '*.proto')
 
+
+  # command to generate docs using protoc-gen-doc
+  buf protoc \
+    -I "proto" \
+    -I "third_party/proto" \
+    --doc_out=./docs/core \
+    --doc_opt=./docs/protodoc-markdown.tmpl,proto-docs.md \
+    $(find "$(pwd)/proto" -maxdepth 5 -name '*.proto')
+  go mod tidy
+
   # generate grpc gateway
   buf protoc \
   -I "proto" \
