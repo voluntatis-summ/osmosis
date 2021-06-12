@@ -157,6 +157,7 @@ func (k Keeper) BeginDistribution(ctx sdk.Context, gauge types.Gauge) error {
 	timeKey := getTimeKey(gauge.StartTime)
 	k.deleteGaugeRefByKey(ctx, combineKeys(types.KeyPrefixUpcomingGauges, timeKey), gauge.Id)
 	k.addGaugeRefByKey(ctx, combineKeys(types.KeyPrefixActiveGauges, timeKey), gauge.Id)
+	// TODO: Is this correct?
 	k.hooks.AfterFinishDistribution(ctx, gauge.Id)
 	return nil
 }
@@ -238,6 +239,19 @@ func (k Keeper) FilteredLocksDistributionEst(ctx sdk.Context, gauge types.Gauge,
 	gauge.DistributedCoins = gauge.DistributedCoins.Add(remainCoinsPerEpoch...)
 
 	return gauge, filteredDistrCoins, nil
+}
+
+// Distribute coins from gauge according to its conditions
+func (k Keeper) DistributeAllGauges(ctx sdk.Context) {
+	// distribute due to epoch event
+	gauges := k.GetActiveGauges(ctx)
+	for _, gauge := range gauges {
+		k.Distribute(ctx, gauge)
+		// filled epoch is increased in this step and we compare with +1
+		if !gauge.IsPerpetual && gauge.NumEpochsPaidOver <= gauge.FilledEpochs+1 {
+			k.FinishDistribution(ctx, gauge)
+		}
+	}
 }
 
 // Distribute coins from gauge according to its conditions
