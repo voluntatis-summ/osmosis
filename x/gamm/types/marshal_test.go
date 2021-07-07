@@ -27,7 +27,7 @@ var ymlAssetTest = []PoolAsset{
 
 func TestPoolMarshalYAML(t *testing.T) {
 	appParams.SetAddressPrefixes()
-	pacc, err := NewPool(defaultPoolId, PoolParams{
+	pacc, err := NewBalancerPool(defaultPoolId, PoolParams{
 		SwapFee: defaultSwapFee,
 		ExitFee: defaultExitFee,
 	}, ymlAssetTest, defaultFutureGovernor, defaultCurBlockTime)
@@ -79,7 +79,7 @@ func TestLBPPoolMarshalYAML(t *testing.T) {
 			},
 		},
 	}
-	pacc, err := NewPool(defaultPoolId, PoolParams{
+	pacc, err := NewBalancerPool(defaultPoolId, PoolParams{
 		SwapFee:                  defaultSwapFee,
 		ExitFee:                  defaultExitFee,
 		SmoothWeightChangeParams: &lbpParams,
@@ -158,7 +158,7 @@ func TestPoolJson(t *testing.T) {
 			Token:  sdk.NewCoin("test1", sdk.NewInt(10000)),
 		},
 	}
-	pacc, err := NewPool(poolId, PoolParams{
+	pacc, err := NewBalancerPool(poolId, PoolParams{
 		SwapFee: defaultSwapFee,
 		ExitFee: defaultExitFee,
 	}, jsonAssetTest, defaultFutureGovernor, defaultCurBlockTime)

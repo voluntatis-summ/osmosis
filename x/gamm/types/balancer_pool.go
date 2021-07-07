@@ -16,7 +16,7 @@ import (
 // * 2 <= len(assets) <= 8
 // * FutureGovernor is valid
 // * poolID doesn't already exist
-func NewPool(poolId uint64, poolParams PoolParams, assets []PoolAsset, futureGovernor string, blockTime time.Time) (PoolI, error) {
+func NewBalancerPool(poolId uint64, poolParams PoolParams, assets []PoolAsset, futureGovernor string, blockTime time.Time) (PoolI, error) {
 	poolAddr := NewPoolAddress(poolId)
 
 	// pool thats created up to ensuring the assets and params are valid.
