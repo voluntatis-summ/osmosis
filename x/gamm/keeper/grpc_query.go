@@ -49,7 +49,7 @@ func (k Keeper) Pool(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	switch pool := pool.(type) {
-	case *types.Pool:
+	case *types.BalancerPool:
 		any, err := codectypes.NewAnyWithValue(pool)
 		if err != nil {
 			return nil, err
@@ -85,7 +85,7 @@ func (k Keeper) Pools(
 			return err
 		}
 
-		pool, ok := poolI.(*types.Pool)
+		pool, ok := poolI.(*types.BalancerPool)
 		if !ok {
 			return fmt.Errorf("pool (%d) is not basic pool", pool.GetId())
 		}

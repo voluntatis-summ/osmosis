@@ -41,6 +41,7 @@ func (pa PoolAsset) MarshalYAML() (interface{}, error) {
 type poolPretty struct {
 	Address            sdk.AccAddress `json:"address" yaml:"address"`
 	Id                 uint64         `json:"id" yaml:"id"`
+	PoolType           string         `json:"pool_type" yaml:"pool_type"`
 	PoolParams         PoolParams     `json:"pool_params" yaml:"pool_params"`
 	FuturePoolGovernor string         `json:"future_pool_governor" yaml:"future_pool_governor"`
 	TotalWeight        sdk.Dec        `json:"total_weight" yaml:"total_weight"`
@@ -48,13 +49,13 @@ type poolPretty struct {
 	PoolAssets         []PoolAsset    `json:"pool_assets" yaml:"pool_assets"`
 }
 
-func (pa Pool) String() string {
+func (pa BalancerPool) String() string {
 	out, _ := pa.MarshalYAML()
 	return out.(string)
 }
 
 // MarshalYAML returns the YAML representation of a Pool.
-func (pa Pool) MarshalYAML() (interface{}, error) {
+func (pa BalancerPool) MarshalYAML() (interface{}, error) {
 	accAddr, err := sdk.AccAddressFromBech32(pa.Address)
 	if err != nil {
 		return nil, err
@@ -65,6 +66,7 @@ func (pa Pool) MarshalYAML() (interface{}, error) {
 	bz, err := yaml.Marshal(poolPretty{
 		Address:            accAddr,
 		Id:                 pa.Id,
+		PoolType:           pa.PoolTypeName(),
 		PoolParams:         pa.PoolParams,
 		FuturePoolGovernor: pa.FuturePoolGovernor,
 		TotalWeight:        decTotalWeight,
@@ -80,7 +82,7 @@ func (pa Pool) MarshalYAML() (interface{}, error) {
 }
 
 // MarshalJSON returns the JSON representation of a Pool.
-func (pa Pool) MarshalJSON() ([]byte, error) {
+func (pa BalancerPool) MarshalJSON() ([]byte, error) {
 	accAddr, err := sdk.AccAddressFromBech32(pa.Address)
 	if err != nil {
 		return nil, err
@@ -91,6 +93,7 @@ func (pa Pool) MarshalJSON() ([]byte, error) {
 	return json.Marshal(poolPretty{
 		Address:            accAddr,
 		Id:                 pa.Id,
+		PoolType:           pa.PoolTypeName(),
 		PoolParams:         pa.PoolParams,
 		FuturePoolGovernor: pa.FuturePoolGovernor,
 		TotalWeight:        decTotalWeight,
@@ -100,7 +103,7 @@ func (pa Pool) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON unmarshals raw JSON bytes into a Pool.
-func (pa *Pool) UnmarshalJSON(bz []byte) error {
+func (pa *BalancerPool) UnmarshalJSON(bz []byte) error {
 	var alias poolPretty
 	if err := json.Unmarshal(bz, &alias); err != nil {
 		return err
@@ -115,4 +118,38 @@ func (pa *Pool) UnmarshalJSON(bz []byte) error {
 	pa.PoolAssets = alias.PoolAssets
 
 	return nil
+}
+
+// Batched pool
+
+// MarshalYAML returns the YAML representation of a Pool.
+func (pa BatchedPool) MarshalYAML() (interface{}, error) {
+	accAddr, err := sdk.AccAddressFromBech32(pa.Address)
+	if err != nil {
+		return nil, err
+	}
+
+	decTotalWeight := sdk.NewDecFromInt(pa.TotalWeight).QuoInt64(GuaranteedWeightPrecision)
+
+	bz, err := yaml.Marshal(poolPretty{
+		Address:            accAddr,
+		Id:                 pa.Id,
+		PoolType:           pa.PoolTypeName(),
+		PoolParams:         pa.PoolParams,
+		FuturePoolGovernor: pa.FuturePoolGovernor,
+		TotalWeight:        decTotalWeight,
+		TotalShares:        pa.TotalShares,
+		PoolAssets:         pa.PoolAssets,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return string(bz), nil
+}
+
+func (pool BatchedPool) String() string {
+	out, _ := pool.MarshalYAML()
+	return out.(string)
 }

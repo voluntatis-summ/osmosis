@@ -39,6 +39,7 @@ func TestPoolMarshalYAML(t *testing.T) {
 	want := `|
   address: osmo1krp38zzc3zz5as9ndqkyskhkzv6x9e30ckcq5g4lcsu5wpwcqy0sa3dea2
   id: 10
+  pool_type: Balancer
   pool_params:
     swap_fee: "0.025000000000000000"
     exit_fee: "0.025000000000000000"
@@ -95,6 +96,7 @@ func TestLBPPoolMarshalYAML(t *testing.T) {
 	want := fmt.Sprintf(`|
   address: osmo1krp38zzc3zz5as9ndqkyskhkzv6x9e30ckcq5g4lcsu5wpwcqy0sa3dea2
   id: 10
+  pool_type: Balancer
   pool_params:
     swap_fee: "0.025000000000000000"
     exit_fee: "0.025000000000000000"
@@ -162,7 +164,7 @@ func TestPoolJson(t *testing.T) {
 	}, jsonAssetTest, defaultFutureGovernor, defaultCurBlockTime)
 	require.NoError(t, err)
 
-	paccInternal := pacc.(*Pool)
+	paccInternal := pacc.(*BalancerPool)
 
 	bz, err := json.Marshal(pacc)
 	require.NoError(t, err)
@@ -171,7 +173,7 @@ func TestPoolJson(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, string(bz1), string(bz))
 
-	var a Pool
+	var a BalancerPool
 	require.NoError(t, json.Unmarshal(bz, &a))
 	require.Equal(t, pacc.String(), a.String())
 }

@@ -113,7 +113,7 @@ func TestPoolUpdatePoolAssetBalance(t *testing.T) {
 	// Break abstractions and start reasoning about the underlying internal representation's APIs.
 	// TODO: This test actually just needs to be refactored to not be doing this, and just
 	// create a different pool each time.
-	pacc_internal := pacc.(*Pool)
+	pacc_internal := pacc.(*BalancerPool)
 
 	err = pacc_internal.setInitialPoolAssets([]PoolAsset{PoolAsset{
 		Weight: sdk.NewInt(-1),
@@ -254,7 +254,7 @@ func TestPoolPoolAssetsWeightAndTokenBalance(t *testing.T) {
 
 	for i, tc := range tests {
 		pacc, err := NewPool(poolId, defaultPoolParams, tc.assets, defaultFutureGovernor, defaultCurBlockTime)
-		pacc_internal := pacc.(*Pool)
+		pacc_internal := pacc.(*BalancerPool)
 		if tc.shouldErr {
 			require.Error(t, err, "unexpected lack of error, tc %v", i)
 		} else {
