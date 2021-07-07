@@ -102,7 +102,7 @@ message PoolParams {
     (gogoproto.moretags) = "yaml:\"exit_fee\"",
     (gogoproto.nullable) = false
   ];
-  //
+  // Only works for BalancerPools at the moment.
   SmoothWeightChangeParams smoothWeightChangeParams = 3 [
     (gogoproto.moretags) = "yaml:\"smooth_weight_change_params\"",
     (gogoproto.nullable) = true
@@ -110,6 +110,50 @@ message PoolParams {
 }
 
 message BalancerPool {
+  option (gogoproto.goproto_getters) = false;
+  option (gogoproto.goproto_stringer) = false;
+  option (cosmos_proto.implements_interface) = "PoolI";
+
+  string address = 1 [ (gogoproto.moretags) = "yaml:\"address\"" ];
+  uint64 id = 2;
+  PoolParams poolParams = 3 [
+    (gogoproto.moretags) = "yaml:\"pool_params\"",
+    (gogoproto.nullable) = false
+  ];
+  // This string specifies who will govern the pool in the future.
+  // Valid forms of this are:
+  // {token name},{duration}
+  // {duration}
+  // where {token name} if specified is the token which determines the governor,
+  // and if not specified is the LP token for this pool.
+  // duration is a time specified as 0w,1w,2w, etc. which specifies how long the
+  // token would need to be locked up to count in governance. 0w means no
+  // lockup.
+  // TODO: Further improve these docs
+  string future_pool_governor = 4
+      [ (gogoproto.moretags) = "yaml:\"future_pool_governor\"" ];
+  // sum of all LP tokens sent out
+  cosmos.base.v1beta1.Coin totalShares = 5 [
+    (gogoproto.moretags) = "yaml:\"total_shares\"",
+    (gogoproto.nullable) = false
+  ];
+  // These are assumed to be sorted by denomiation.
+  // They contain the pool asset and the information about the weight
+  repeated PoolAsset poolAssets = 6 [
+    (gogoproto.moretags) = "yaml:\"pool_assets\"",
+    (gogoproto.nullable) = false
+  ];
+  // sum of all non-normalized pool weights
+  string totalWeight = 7 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"total_weight\"",
+    (gogoproto.nullable) = false
+  ];
+}
+
+// Batched BalancerPool implements a batching variant of a balancer pool.
+// Currently is restricted to 50/50 pools.
+message BatchedPool {
   option (gogoproto.goproto_getters) = false;
   option (gogoproto.goproto_stringer) = false;
   option (cosmos_proto.implements_interface) = "PoolI";
