@@ -38,6 +38,8 @@ message MsgCreatePool {
 
   string future_pool_governor = 4
       [ (gogoproto.moretags) = "yaml:\"future_pool_governor\"" ];
+
+  bool batched = 5;
 }
 
 message MsgCreatePoolResponse {}
