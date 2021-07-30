@@ -220,6 +220,7 @@ func (k Keeper) GetLocksToDistribution(ctx sdk.Context, distrTo lockuptypes.Quer
 // (Note this update is in-memory, it does not change state.)
 func (k Keeper) FilteredLocksDistributionEst(ctx sdk.Context, gauge types.Gauge, filteredLocks []lockuptypes.PeriodLock) (types.Gauge, sdk.Coins, error) {
 	TotalAmtLocked := k.lk.GetPeriodLocksAccumulation(ctx, gauge.DistributeTo)
+	fmt.Println("TotalAmtLocked: ", TotalAmtLocked)
 	if TotalAmtLocked.IsZero() {
 		return types.Gauge{}, nil, nil
 	}
@@ -432,7 +433,7 @@ func (k Keeper) GetRewardsEst(ctx sdk.Context, addr sdk.AccAddress, locks []lock
 		}
 
 		for epoch := distrBeginEpoch; epoch <= endEpoch; epoch++ {
-
+			fmt.Println("epoch", epoch, "gauge ID", gauge.Id)
 			newGauge, distrCoins, err := k.FilteredLocksDistributionEst(cacheCtx, gauge, locks)
 			if err != nil {
 				continue
