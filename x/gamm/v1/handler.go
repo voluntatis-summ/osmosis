@@ -1,10 +1,10 @@
-package gamm
+package v1
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/osmosis-labs/osmosis/x/gamm/keeper"
-	"github.com/osmosis-labs/osmosis/x/gamm/types"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/keeper"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 )
 
 // NewHandler returns a handler for "gamm" type messages.

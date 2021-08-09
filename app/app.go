@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
+	gammv1 "github.com/osmosis-labs/osmosis/x/gamm/v1"
+
 	ibcclient "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client"
 	paramproposal "github.com/cosmos/cosmos-sdk/x/params/types/proposal"
 
@@ -81,9 +83,8 @@ import (
 	"github.com/osmosis-labs/osmosis/x/epochs"
 	epochskeeper "github.com/osmosis-labs/osmosis/x/epochs/keeper"
 	epochstypes "github.com/osmosis-labs/osmosis/x/epochs/types"
-	"github.com/osmosis-labs/osmosis/x/gamm"
-	gammkeeper "github.com/osmosis-labs/osmosis/x/gamm/keeper"
-	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/types"
+	gammv1keeper "github.com/osmosis-labs/osmosis/x/gamm/v1/keeper"
+	gammv1types "github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 	"github.com/osmosis-labs/osmosis/x/incentives"
 	incentiveskeeper "github.com/osmosis-labs/osmosis/x/incentives/keeper"
 	incentivestypes "github.com/osmosis-labs/osmosis/x/incentives/types"
@@ -136,7 +137,7 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		gamm.AppModuleBasic{},
+		gammv1.AppModuleBasic{},
 		incentives.AppModuleBasic{},
 		lockup.AppModuleBasic{},
 		poolincentives.AppModuleBasic{},
@@ -155,7 +156,7 @@ var (
 		govtypes.ModuleName:                      {authtypes.Burner},
 		ibctransfertypes.ModuleName:              {authtypes.Minter, authtypes.Burner},
 		claimtypes.ModuleName:                    {authtypes.Minter, authtypes.Burner},
-		gammtypes.ModuleName:                     {authtypes.Minter, authtypes.Burner},
+		gammv1types.ModuleName:                   {authtypes.Minter, authtypes.Burner},
 		incentivestypes.ModuleName:               {authtypes.Minter, authtypes.Burner},
 		lockuptypes.ModuleName:                   {authtypes.Minter, authtypes.Burner},
 		poolincentivestypes.ModuleName:           nil,
@@ -201,7 +202,7 @@ type OsmosisApp struct {
 	EvidenceKeeper       evidencekeeper.Keeper
 	TransferKeeper       ibctransferkeeper.Keeper
 	ClaimKeeper          *claimkeeper.Keeper
-	GAMMKeeper           gammkeeper.Keeper
+	GAMMKeeper           gammv1keeper.Keeper
 	IncentivesKeeper     incentiveskeeper.Keeper
 	LockupKeeper         lockupkeeper.Keeper
 	EpochsKeeper         epochskeeper.Keeper
@@ -247,7 +248,7 @@ func NewOsmosisApp(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		gammtypes.StoreKey, lockuptypes.StoreKey, claimtypes.StoreKey, incentivestypes.StoreKey,
+		gammv1types.StoreKey, lockuptypes.StoreKey, claimtypes.StoreKey, incentivestypes.StoreKey,
 		epochstypes.StoreKey, poolincentivestypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -341,7 +342,7 @@ func NewOsmosisApp(
 			app.DistrKeeper.SetParams(ctx, distrParams)
 
 			// configure upgrade for gamm module's pool creation fee param add
-			app.GAMMKeeper.SetParams(ctx, gammtypes.NewParams(sdk.Coins{sdk.NewInt64Coin("uosmo", 1000000000)})) // 1000 OSMO
+			app.GAMMKeeper.SetParams(ctx, gammv1types.NewParams(sdk.Coins{sdk.NewInt64Coin("uosmo", 1000000000)})) // 1000 OSMO
 		})
 
 	// Create IBC Keeper
@@ -376,7 +377,7 @@ func NewOsmosisApp(
 	app.StakingKeeper = *stakingKeeper.SetHooks(
 		stakingtypes.NewMultiStakingHooks(app.DistrKeeper.Hooks(), app.SlashingKeeper.Hooks(), app.ClaimKeeper.Hooks()),
 	)
-	gammKeeper := gammkeeper.NewKeeper(appCodec, keys[gammtypes.StoreKey], app.GetSubspace(gammtypes.ModuleName), app.AccountKeeper, app.BankKeeper, app.DistrKeeper)
+	gammKeeper := gammv1keeper.NewKeeper(appCodec, keys[gammv1types.StoreKey], app.GetSubspace(gammv1types.ModuleName), app.AccountKeeper, app.BankKeeper, app.DistrKeeper)
 	lockupKeeper := lockupkeeper.NewKeeper(appCodec, keys[lockuptypes.StoreKey], app.AccountKeeper, app.BankKeeper)
 	epochsKeeper := epochskeeper.NewKeeper(appCodec, keys[epochstypes.StoreKey])
 	incentivesKeeper := incentiveskeeper.NewKeeper(appCodec, keys[incentivestypes.StoreKey], app.GetSubspace(incentivestypes.ModuleName), app.AccountKeeper, app.BankKeeper, *lockupKeeper, epochsKeeper)
@@ -413,7 +414,7 @@ func NewOsmosisApp(
 		&stakingKeeper, govRouter)
 
 	app.GAMMKeeper = *gammKeeper.SetHooks(
-		gammtypes.NewMultiGammHooks(
+		gammv1types.NewMultiGammHooks(
 			// insert gamm hooks receivers here
 			poolIncentivesHooks,
 			app.ClaimKeeper.Hooks(),
@@ -483,7 +484,7 @@ func NewOsmosisApp(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		claim.NewAppModule(appCodec, *app.ClaimKeeper),
-		gamm.NewAppModule(appCodec, app.GAMMKeeper, app.AccountKeeper, app.BankKeeper),
+		gammv1.NewAppModule(appCodec, app.GAMMKeeper, app.AccountKeeper, app.BankKeeper),
 		incentives.NewAppModule(appCodec, app.IncentivesKeeper, app.AccountKeeper, app.BankKeeper, app.EpochsKeeper),
 		lockup.NewAppModule(appCodec, app.LockupKeeper, app.AccountKeeper, app.BankKeeper),
 		poolincentives.NewAppModule(appCodec, app.PoolIncentivesKeeper),
@@ -520,7 +521,7 @@ func NewOsmosisApp(
 		claimtypes.ModuleName,
 		incentivestypes.ModuleName,
 		epochstypes.ModuleName,
-		gammtypes.ModuleName,
+		gammv1types.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -543,7 +544,7 @@ func NewOsmosisApp(
 		params.NewAppModule(app.ParamsKeeper),
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
-		gamm.NewAppModule(appCodec, app.GAMMKeeper, app.AccountKeeper, app.BankKeeper),
+		gammv1.NewAppModule(appCodec, app.GAMMKeeper, app.AccountKeeper, app.BankKeeper),
 		incentives.NewAppModule(appCodec, app.IncentivesKeeper, app.AccountKeeper, app.BankKeeper, app.EpochsKeeper),
 		lockup.NewAppModule(appCodec, app.LockupKeeper, app.AccountKeeper, app.BankKeeper),
 		poolincentives.NewAppModule(appCodec, app.PoolIncentivesKeeper),
@@ -774,7 +775,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(incentivestypes.ModuleName)
 	paramsKeeper.Subspace(poolincentivestypes.ModuleName)
-	paramsKeeper.Subspace(gammtypes.ModuleName)
+	paramsKeeper.Subspace(gammv1types.ModuleName)
 
 	return paramsKeeper
 }

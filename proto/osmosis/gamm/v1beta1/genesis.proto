@@ -6,6 +6,8 @@ import "google/protobuf/any.proto";
 import "cosmos_proto/cosmos.proto";
 import "cosmos/base/v1beta1/coin.proto";
 
+option go_package = "github.com/osmosis-labs/osmosis/x/gamm/v1/types";
+
 // Params holds parameters for the incentives module
 message Params {
     repeated cosmos.base.v1beta1.Coin pool_creation_fee = 1 [
@@ -14,9 +16,6 @@ message Params {
         (gogoproto.nullable) = false
     ];
 }
-
-
-option go_package = "github.com/osmosis-labs/osmosis/x/gamm/types";
 
 // GenesisState defines the gamm module's genesis state.
 message GenesisState {

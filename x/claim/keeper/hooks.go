@@ -5,7 +5,7 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/osmosis-labs/osmosis/x/claim/types"
-	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/types"
+	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 )
 
 func (k Keeper) AfterAddLiquidity(ctx sdk.Context, sender sdk.AccAddress) {

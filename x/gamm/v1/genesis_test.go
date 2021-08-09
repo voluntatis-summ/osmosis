@@ -1,14 +1,15 @@
-package gamm_test
+package v1_test
 
 import (
 	"testing"
+
+	gammv1 "github.com/osmosis-labs/osmosis/x/gamm/v1"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simapp "github.com/osmosis-labs/osmosis/app"
 	appparams "github.com/osmosis-labs/osmosis/app/params"
-	"github.com/osmosis-labs/osmosis/x/gamm"
-	"github.com/osmosis-labs/osmosis/x/gamm/types"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/crypto/ed25519"
@@ -40,7 +41,7 @@ func TestGammInitGenesis(t *testing.T) {
 	any, err := codectypes.NewAnyWithValue(pool)
 	require.NoError(t, err)
 
-	gamm.InitGenesis(ctx, app.GAMMKeeper, types.GenesisState{
+	gammv1.InitGenesis(ctx, app.GAMMKeeper, types.GenesisState{
 		Pools:          []*codectypes.Any{any},
 		NextPoolNumber: 2,
 		Params: types.Params{
@@ -101,7 +102,7 @@ func TestGammExportGenesis(t *testing.T) {
 	}}, "")
 	require.NoError(t, err)
 
-	genesis := gamm.ExportGenesis(ctx, app.GAMMKeeper)
+	genesis := gammv1.ExportGenesis(ctx, app.GAMMKeeper)
 	require.Equal(t, genesis.NextPoolNumber, uint64(3))
 	require.Len(t, genesis.Pools, 2)
 }
@@ -112,7 +113,7 @@ func TestMarshalUnmarshalGenesis(t *testing.T) {
 
 	encodingConfig := simapp.MakeEncodingConfig()
 	appCodec := encodingConfig.Marshaler
-	am := gamm.NewAppModule(appCodec, app.GAMMKeeper, app.AccountKeeper, app.BankKeeper)
+	am := gammv1.NewAppModule(appCodec, app.GAMMKeeper, app.AccountKeeper, app.BankKeeper)
 	acc1 := sdk.AccAddress(ed25519.GenPrivKey().PubKey().Address().Bytes())
 	app.BankKeeper.SetBalances(ctx, acc1, sdk.Coins{
 		sdk.NewCoin("uosmo", sdk.NewInt(10000000000)),

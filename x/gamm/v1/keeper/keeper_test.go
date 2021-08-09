@@ -13,7 +13,7 @@ import (
 
 	"github.com/osmosis-labs/osmosis/app"
 
-	"github.com/osmosis-labs/osmosis/x/gamm/types"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 )
 
 type KeeperTestSuite struct {

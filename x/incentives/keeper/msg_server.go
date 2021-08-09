@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/osmosis-labs/osmosis/x/gamm/utils"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/utils"
 	"github.com/osmosis-labs/osmosis/x/incentives/types"
 )
 

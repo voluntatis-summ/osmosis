@@ -14,7 +14,7 @@ import (
 
 	"github.com/osmosis-labs/osmosis/app"
 
-	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/types"
+	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 	"github.com/osmosis-labs/osmosis/x/pool-incentives/types"
 )
 

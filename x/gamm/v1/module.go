@@ -1,4 +1,4 @@
-package gamm
+package v1
 
 import (
 	"context"
@@ -18,11 +18,11 @@ import (
 	"github.com/spf13/cobra"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/osmosis-labs/osmosis/x/gamm/client/cli"
-	"github.com/osmosis-labs/osmosis/x/gamm/client/rest"
-	"github.com/osmosis-labs/osmosis/x/gamm/keeper"
-	"github.com/osmosis-labs/osmosis/x/gamm/simulation"
-	"github.com/osmosis-labs/osmosis/x/gamm/types"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/client/cli"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/client/rest"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/keeper"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/simulation"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 )
 
 var (

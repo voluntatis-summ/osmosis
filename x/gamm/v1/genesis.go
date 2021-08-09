@@ -1,12 +1,12 @@
-package gamm
+package v1
 
 import (
 	"fmt"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/osmosis-labs/osmosis/x/gamm/keeper"
-	"github.com/osmosis-labs/osmosis/x/gamm/types"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/keeper"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

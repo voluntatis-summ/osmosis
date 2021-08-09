@@ -16,10 +16,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 	"github.com/osmosis-labs/osmosis/app"
-	"github.com/osmosis-labs/osmosis/x/gamm/client/cli"
-	gammtestutil "github.com/osmosis-labs/osmosis/x/gamm/client/testutil"
-	"github.com/osmosis-labs/osmosis/x/gamm/types"
-	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/types"
+	"github.com/osmosis-labs/osmosis/x/gamm/v1/client/cli"
+	gammtestutil "github.com/osmosis-labs/osmosis/x/gamm/v1/client/testutil"
+	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 )
 
@@ -785,7 +784,7 @@ func (s *IntegrationTestSuite) TestGetCmdPools() {
 			if tc.expectErr {
 				s.Require().Error(err)
 			} else {
-				resp := types.QueryPoolsResponse{}
+				resp := gammtypes.QueryPoolsResponse{}
 				s.Require().NoError(err, out.String())
 				s.Require().NoError(clientCtx.JSONMarshaler.UnmarshalJSON(out.Bytes(), &resp), out.String())
 
@@ -823,7 +822,7 @@ func (s *IntegrationTestSuite) TestGetCmdNumPools() {
 			if tc.expectErr {
 				s.Require().Error(err)
 			} else {
-				resp := types.QueryNumPoolsResponse{}
+				resp := gammtypes.QueryNumPoolsResponse{}
 				s.Require().NoError(err, out.String())
 				s.Require().NoError(clientCtx.JSONMarshaler.UnmarshalJSON(out.Bytes(), &resp), out.String())
 
@@ -864,7 +863,7 @@ func (s *IntegrationTestSuite) TestGetCmdPool() {
 			} else {
 				s.Require().NoError(err, out.String())
 
-				resp := types.QueryPoolResponse{}
+				resp := gammtypes.QueryPoolResponse{}
 				s.Require().NoError(clientCtx.JSONMarshaler.UnmarshalJSON(out.Bytes(), &resp), out.String())
 			}
 		})
@@ -900,7 +899,7 @@ func (s *IntegrationTestSuite) TestGetCmdPoolParams() {
 			if tc.expectErr {
 				s.Require().Error(err)
 			} else {
-				resp := types.QueryPoolParamsResponse{}
+				resp := gammtypes.QueryPoolParamsResponse{}
 				s.Require().NoError(err, out.String())
 				s.Require().NoError(clientCtx.JSONMarshaler.UnmarshalJSON(out.Bytes(), &resp), out.String())
 			}
@@ -937,7 +936,7 @@ func (s *IntegrationTestSuite) TestGetCmdPoolAssets() {
 			if tc.expectErr {
 				s.Require().Error(err)
 			} else {
-				resp := types.QueryPoolAssetsResponse{}
+				resp := gammtypes.QueryPoolAssetsResponse{}
 				s.Require().NoError(err, out.String())
 				s.Require().NoError(clientCtx.JSONMarshaler.UnmarshalJSON(out.Bytes(), &resp), out.String())
 			}
@@ -974,7 +973,7 @@ func (s *IntegrationTestSuite) TestGetCmdTotalShares() {
 			if tc.expectErr {
 				s.Require().Error(err)
 			} else {
-				resp := types.QueryTotalSharesResponse{}
+				resp := gammtypes.QueryTotalSharesResponse{}
 				s.Require().NoError(err, out.String())
 				s.Require().NoError(clientCtx.JSONMarshaler.UnmarshalJSON(out.Bytes(), &resp), out.String())
 			}
@@ -1010,7 +1009,7 @@ func (s *IntegrationTestSuite) TestGetCmdTotalLiquidity() {
 			if tc.expectErr {
 				s.Require().Error(err)
 			} else {
-				resp := types.QueryTotalLiquidityResponse{}
+				resp := gammtypes.QueryTotalLiquidityResponse{}
 				s.Require().NoError(err, out.String())
 				s.Require().NoError(clientCtx.JSONMarshaler.UnmarshalJSON(out.Bytes(), &resp), out.String())
 			}
@@ -1047,7 +1046,7 @@ func (s *IntegrationTestSuite) TestGetCmdSpotPrice() {
 			if tc.expectErr {
 				s.Require().Error(err)
 			} else {
-				resp := types.QuerySpotPriceResponse{}
+				resp := gammtypes.QuerySpotPriceResponse{}
 				s.Require().NoError(err, out.String())
 				s.Require().NoError(clientCtx.JSONMarshaler.UnmarshalJSON(out.Bytes(), &resp), out.String())
 			}

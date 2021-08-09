@@ -7,7 +7,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 
-	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/types"
+	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/v1/types"
 	incentivestypes "github.com/osmosis-labs/osmosis/x/incentives/types"
 	lockuptypes "github.com/osmosis-labs/osmosis/x/lockup/types"
 )
